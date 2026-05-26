@@ -16,6 +16,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { jsPDF } from 'jspdf';
 import WorkspacePhoto from './components/WorkspacePhoto';
 import VisitorsPanel from './components/VisitorsPanel';
+import { getSocketUrl } from './lib/runtimeUrls';
 const operatorNavItems: Array<{ to: string; label: string; roles: Role[] }> = [
   { to: '/app/dashboard', label: 'Command Center', roles: ['admin'] },
   { to: '/app/branches', label: 'Branches', roles: ['admin'] },
@@ -157,12 +158,6 @@ function loadLocalFeedback(): Feedback[] {
 function saveLocalFeedback(feedback: Feedback[]) {
   if (typeof window === 'undefined') return;
   window.localStorage.setItem('deskora-feedback', JSON.stringify(feedback));
-}
-
-function getRealtimeSocketUrl() {
-  if (import.meta.env.VITE_SOCKET_URL) return import.meta.env.VITE_SOCKET_URL as string;
-  if (window.location.port === '5173') return 'http://localhost:4000';
-  return window.location.origin;
 }
 
 const premiumRoomTitles = [
@@ -949,7 +944,7 @@ function SeatsPage() {
 
   useEffect(() => {
     if (!token || !branchId) return;
-    const socket: Socket = io(getRealtimeSocketUrl(), { auth: { token } });
+    const socket: Socket = io(getSocketUrl(), { auth: { token } });
 
     const handleSeatUpdate = (updatedSeat: Seat) => {
       if (updatedSeat.branchId === branchId) {

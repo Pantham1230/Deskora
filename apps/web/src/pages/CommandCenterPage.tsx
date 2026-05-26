@@ -10,6 +10,8 @@ import { getDashboard, listBranches, listMeetingRooms, listSeats } from '../api'
 import type { Branch, DashboardResponse, MeetingRoom, Seat } from '../types';
 import { useAuthStore } from '../store/auth';
 
+import { getSocketUrl } from '../lib/runtimeUrls';
+
 function useDashboardData() {
   const [data, setData] = useState<DashboardResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -78,12 +80,6 @@ function formatCompactCurrency(value: number) {
 
 function getHealthScore(occupancy: number, rating: number, revenue: number) {
   return Math.max(40, Math.min(99, Math.round((occupancy * 0.35) + (rating * 18) + Math.min(revenue / 10000, 25))));
-}
-
-function getRealtimeSocketUrl() {
-  if (import.meta.env.VITE_SOCKET_URL) return import.meta.env.VITE_SOCKET_URL as string;
-  if (window.location.port === '5173') return 'http://localhost:4000';
-  return window.location.origin;
 }
 
 type ActivityTone = 'booking' | 'payment' | 'client' | 'renewal' | 'meeting';
@@ -204,7 +200,7 @@ export function CommandCenterPage() {
 
   useEffect(() => {
     if (!token || !claims) return;
-    const socket: Socket = io(getRealtimeSocketUrl(), { auth: { token } });
+    const socket: Socket = io(getSocketUrl(), { auth: { token } });
 
     const refreshBranchData = async (branchId: string) => {
       if (!branchId) return;

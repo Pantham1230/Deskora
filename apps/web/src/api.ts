@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { AuthClaims, Booking, Branch, Client, Company, DashboardResponse, Employee, Invoice, MeetingRoom, Notification, Role, Seat, User, Visitor } from './types';
+import { getApiBaseUrl } from './lib/runtimeUrls';
 
 export type RegisterAccountPayload =
   | { role: 'admin'; companyName: string; industry: string; name: string; email: string; password: string }
@@ -61,7 +62,7 @@ export type PublicWorkspaceCatalog = {
 };
 
 export const api = axios.create({
-  baseURL: '/api'
+  baseURL: getApiBaseUrl()
 });
 
 export function setAuthToken(token: string | null) {

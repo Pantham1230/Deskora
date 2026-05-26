@@ -6,12 +6,7 @@ import { useToast } from '../components/Toast';
 import { defaultMeetingWindow, validateMeetingTimeRange } from '../lib/booking';
 import type { Booking, Branch, MeetingRoom, Seat } from '../types';
 import { useAuthStore } from '../store/auth';
-
-function getRealtimeSocketUrl() {
-  if (import.meta.env.VITE_SOCKET_URL) return import.meta.env.VITE_SOCKET_URL as string;
-  if (window.location.port === '5173') return 'http://localhost:4000';
-  return window.location.origin;
-}
+import { getSocketUrl } from '../lib/runtimeUrls';
 
 function Section({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
   return (
@@ -64,7 +59,7 @@ export function BookingsPage() {
 
   useEffect(() => {
     if (!token || !branchId) return;
-    const socket: Socket = io(getRealtimeSocketUrl(), { auth: { token } });
+    const socket: Socket = io(getSocketUrl(), { auth: { token } });
     socket.on('seat:updated', (updatedSeat: Seat) => {
       if (updatedSeat.branchId === branchId) {
         setSeats((current) => current.map((seat) => (seat.id === updatedSeat.id ? updatedSeat : seat)));

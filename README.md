@@ -51,3 +51,15 @@ Authentication entry points:
 - API: `http://localhost:4000`
 - Web app: `http://localhost:5173`
 - The Vite app proxies `/api` to the backend during development.
+
+## Render Deployment
+
+This repo includes a [render.yaml](render.yaml) Blueprint that deploys:
+
+- `deskora-api` as a Node web service
+- `deskora-web` as a static site
+- `deskora-db` as managed PostgreSQL
+
+After connecting the repo in Render, create the Blueprint or deploy `render.yaml`. The public frontend will be available at the `deskora-web` URL, and the API will be available at the `deskora-api` URL.
+
+If you rename either Render service, update `VITE_API_URL` and `VITE_SOCKET_URL` in the Blueprint so the frontend keeps pointing at the correct backend.
