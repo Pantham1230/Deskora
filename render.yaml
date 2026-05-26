@@ -26,7 +26,7 @@ services:
       - key: DEMO_SIMULATION
         value: off
 
-  - type: static
+  - type: web
     name: deskora-web
     runtime: static
     rootDir: apps/web
