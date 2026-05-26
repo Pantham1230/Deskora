@@ -1,13 +1,8 @@
-databases:
-  - name: deskora-db
-    plan: starter
-    postgresMajorVersion: "17"
-
 services:
   - type: web
     name: deskora-api
     runtime: node
-    plan: starter
+    plan: free
     rootDir: apps/server
     buildCommand: npm install && npm run build
     startCommand: npm start
@@ -15,16 +10,10 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 22.22.0
-      - key: DATABASE_URL
-        fromDatabase:
-          name: deskora-db
-          property: connectionString
       - key: JWT_SECRET
         generateValue: true
       - key: CANCELLATION_WINDOW_HOURS
         value: 3
-      - key: DEMO_SIMULATION
-        value: off
 
   - type: web
     name: deskora-web
