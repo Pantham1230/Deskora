@@ -1,0 +1,14 @@
+{
+  "name": "deskora",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @deskora/server",
+    "dev:web": "npm run dev -w @deskora/web",
+    "start": "npm run build && npm run start -w @deskora/server",
+    "build": "npm run build -w @deskora/server && npm run build -w @deskora/web",
+    "seed": "npm run seed -w @deskora/server"
+  }
+}

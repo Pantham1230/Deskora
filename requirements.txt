@@ -1,0 +1,2 @@
+# Deskora is a Node.js workspace and does not require Python packages.
+# This file exists only because some tooling expects a requirements.txt file.
